@@ -1,0 +1,10 @@
+export { LoginPage as LoginUserPage } from './LoginUser';
+export { LoginPage as LoginCounselorPage } from './LoginUser';
+export { LoginPage as LoginAdminPage } from './LoginUser';
+export { RegisterUser as RegisterUserPage } from './RegisterUser';
+export { RegisterCounselor as RegisterCounselorPage } from './RegisterCounselor';
+export { RegisterAdmin as RegisterAdminPage } from './RegisterAdmin';
+export { Home as HomePage } from './Home';
+export { UserDashboard } from './UserDashboard';
+export { CounselorDashboard } from './CounselorDashboard';
+export { AdminDashboard } from './AdminDashboard';
