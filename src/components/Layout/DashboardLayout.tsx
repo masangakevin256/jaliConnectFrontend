@@ -9,15 +9,15 @@ interface DashboardLayoutProps {
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     return (
         <div className="dashboard-container">
-            <div className="sidebar-sticky d-none d-lg-block">
+            <aside className="sidebar-fixed d-none d-lg-block">
                 <Sidebar />
-            </div>
-            <div className="main-content">
+            </aside>
+            <main className="main-content">
                 <Navbar />
                 <div className="p-4 p-md-5">
                     {children}
                 </div>
-            </div>
+            </main>
         </div>
     );
 };

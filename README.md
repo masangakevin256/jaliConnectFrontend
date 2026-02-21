@@ -1,55 +1,91 @@
-# Jali Connect Frontend
+# Jali Connect - Frontend
 
-A production-ready mental health support platform built with React, Vite, and TypeScript.
+![Jali Connect Logo](public/vite.svg)
 
-## Features
+Jali Connect is a premium, state-of-the-art mental health orchestration platform designed to bridge the gap between users and specialized counseling services. This frontend implementation provides a professional, warm, and highly interactive user experience.
 
-- Complete authentication system with JWT
-- Role-based access control (User, Counselor, Admin)
-- Three separate dashboards with specialized modules
-- Real-time messaging with Socket.io
-- Responsive Bootstrap UI
-- Mental health-focused design
+## ✨ Key Features
 
-## Tech Stack
+### 👤 User Dashboard
+*   **Daily Check-ins**: Interactive mood tracking with visual feedback and history.
+*   **Session Management**: Request, view, and join counseling sessions seamlessly.
+*   **AI Mental Health Assistant**: 24/7 support using specialized AI models.
+*   **Growth Tracking**: Visualize wellness trends with beautiful Recharts integration.
 
-- React 18 + Vite
-- TypeScript
-- Bootstrap 5
-- React Router v6
-- Axios
-- Socket.io-client
-- Recharts for data visualization
-- React Hot Toast for notifications
+### 🩺 Counselor Dashboard
+*   **Client Management**: Comprehensive overview of assigned clients and their history.
+*   **Live Sessions**: Real-time communication interface with synchronized state.
+*   **Practice Analytics**: Track session ratings and client progress metrics.
+*   **Schedule Overview**: Efficient management of daily and weekly appointments.
 
-## Installation
+### ⚙️ Admin Dashboard
+*   **Platform Orchestration**: High-level metrics on user growth and session volume.
+*   **System Health**: Real-time monitoring of server and database status.
+*   **Staff Management**: Directory of licensed professionals and role assignments.
 
-```bash
-npm install
+## 🎨 Design Documentation
+
+The application features a **Premium Design System** built on a warm Teal and Orange palette:
+
+*   **Color Tokens**: Uses `--primary-teal` (#2EC4B6) and `--accent-orange` (#F4A261).
+*   **Glassmorphism**: Integrated translucent panels with backdrop blur for a modern aesthetic.
+*   **Elevation**: Multi-layered shadow system for clear component hierarchy.
+*   **Animations**: Smooth entry animations (`.animate-up`) and micro-interactions for a reactive feel.
+*   **Typography**: Clean, professional Inter font with optimized line-height for readability.
+
+## 🛠 Tech Stack
+
+*   **Framework**: [React 18](https://reactjs.org/) + [Vite](https://vitejs.dev/)
+*   **Language**: [TypeScript](https://www.typescriptlang.org/)
+*   **Styling**: [Bootstrap 5](https://getbootstrap.com/) + Custom Design System
+*   **Icons**: [React Icons (Fi)](https://react-icons.github.io/react-icons/)
+*   **Charts**: [Recharts](https://recharts.org/)
+*   **Notifications**: [React Hot Toast](https://react-hot-toast.com/)
+*   **Routing**: [React Router v6](https://reactrouter.com/)
+*   **Real-time**: [Socket.io Client](https://socket.io/)
+
+## 📂 Project Structure
+
+```text
+src/
+├── api/            # Base API configurations and interceptors
+├── components/     # UI Components organized by feature (Auth, Dashboard, Layout)
+├── context/        # Global state management (AuthContext)
+├── hooks/          # Domain-specific custom hooks (useAuth, useSocket)
+├── pages/          # Root page level components and routing
+├── services/       # API abstraction layer for backend communication
+├── styles/         # Global design system and custom CSS variables
+└── types/          # Shared TypeScript interfaces and types
 ```
 
-## Development
+## 🚀 Getting Started
 
-```bash
-npm run dev
-```
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
 
-## Build
+### Installation
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Configure environment (Create `.env` if necessary):
+   ```env
+   VITE_API_URL=http://localhost:5000
+   VITE_SOCKET_URL=http://localhost:5000
+   ```
+4. Start development server:
+   ```bash
+   npm run dev
+   ```
 
+## 📜 Deployment
+To create a production build:
 ```bash
 npm run build
 ```
+The output will be in the `dist/` folder, ready for static hosting.
 
-## Project Structure
-
-```
-src/
-├── api/              # API service configuration
-├── context/          # React Context for global state
-├── hooks/            # Custom React hooks
-├── components/       # Reusable UI components
-├── pages/            # Page components
-├── types/            # TypeScript type definitions
-├── services/         # Business logic services
-└── main.tsx         # Application entry point
-```
+---
+Built with ❤️ for mental wellness by Jali Connect Team.
