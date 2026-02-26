@@ -31,4 +31,5 @@ export const authService = {
 
   resetPassword: (payload: { token: string; newPassword: string }): Promise<{ message: string }> =>
     axiosInstance.post('/auth/user/password-reset/password-reset-form', payload).then((res: any) => res.data),
+  
 };

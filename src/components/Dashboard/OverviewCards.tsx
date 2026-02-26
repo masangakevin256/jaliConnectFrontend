@@ -1,68 +1,106 @@
 import React from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
 import { StatsCard } from './StatsCard';
-import { FiMessageSquare, FiTrendingUp, FiCalendar, FiUsers, FiHeart, FiClock, FiShield, FiUserCheck, FiZap } from 'react-icons/fi';
+import { FiMessageSquare, FiTrendingUp, FiCalendar, FiUsers, FiHeart, FiClock, FiShield, FiUserCheck, FiZap, FiLoader } from 'react-icons/fi';
 import { useAuth } from '../../hooks/useAuth';
+import { statsService, UserStats, CounselorStats, AdminStats } from '../../services/statsService';
 
 export const OverviewCards: React.FC = () => {
-    const { isUser, isCounselor, isAdmin } = useAuth();
+    const { isUser, isCounselor, isAdmin, user } = useAuth();
+    
+    const [loading, setLoading] = React.useState(true);
+    const [userStats, setUserStats] = React.useState<UserStats | null>(null);
+    const [counselorStats, setCounselorStats] = React.useState<CounselorStats | null>(null);
+    const [adminStats, setAdminStats] = React.useState<AdminStats | null>(null);
+
+    React.useEffect(() => {
+        const fetchStats = async () => {
+            setLoading(true);
+            try {
+                if (isUser) {
+                    const data = await statsService.getUserStats();
+                    setUserStats(data);
+                } else if (isCounselor) {
+                    const data = await statsService.getCounselorStats();
+                    setCounselorStats(data);
+                } else if (isAdmin) {
+                    const data = await statsService.getAdminStats();
+                    setAdminStats(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch stats", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchStats();
+    }, [isUser, isCounselor, isAdmin]);
+
+    if (loading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center py-5">
+                <FiLoader className="icon-spin text-primary-teal" size={32} />
+            </div>
+        );
+    }
 
     const renderUserCards = () => (
         <Row className="g-4">
             <Col lg={4} md={6}>
                 <StatsCard
                     title="Mood Average"
-                    value="Good"
+                    value={userStats?.moodAverage.value || "No Data"}
                     icon={FiHeart}
-                    trend={{ value: '12%', isUp: true }}
+                    trend={userStats?.moodAverage.trend}
                     color="var(--primary-teal)"
-                    subtitle="Last 30 days"
+                    subtitle={userStats?.moodAverage.subtitle || "Last 30 days"}
                 />
             </Col>
             <Col lg={4} md={6}>
                 <StatsCard
                     title="Total Sessions"
-                    value="12"
+                    value={userStats?.totalSessions.value || "0"}
                     icon={FiCalendar}
                     color="var(--accent-orange)"
-                    subtitle="This month"
+                    subtitle={userStats?.totalSessions.subtitle || "All time"}
                 />
             </Col>
             <Col lg={4} md={6}>
                 <StatsCard
                     title="Unread Messages"
-                    value="3"
+                    value={userStats?.unreadMessages.value || "0"}
                     icon={FiMessageSquare}
                     color="var(--primary-teal)"
-                    subtitle="From your counselor"
+                    subtitle={userStats?.unreadMessages.subtitle || "From your counselor"}
                 />
             </Col>
             <Col lg={4} md={6}>
                 <StatsCard
                     title="Journal Entries"
-                    value="8"
+                    value={userStats?.journalEntries.value || "0"}
                     icon={FiTrendingUp}
                     color="var(--accent-orange)"
-                    subtitle="This week"
+                    subtitle={userStats?.journalEntries.subtitle || "All time"}
                 />
             </Col>
             <Col lg={4} md={6}>
                 <StatsCard
                     title="Next Session"
-                    value="Tomorrow"
+                    value={userStats?.nextSession.value || "None"}
                     icon={FiClock}
                     color="var(--primary-teal)"
-                    subtitle="10:00 AM"
+                    subtitle={userStats?.nextSession.subtitle || "N/A"}
                 />
             </Col>
             <Col lg={4} md={6}>
                 <StatsCard
                     title="Wellness Score"
-                    value="85%"
+                    value={userStats?.wellnessScore.value || "N/A"}
                     icon={FiHeart}
-                    trend={{ value: '5%', isUp: true }}
+                    trend={userStats?.wellnessScore.trend}
                     color="var(--accent-orange)"
-                    subtitle="Improved"
+                    subtitle={userStats?.wellnessScore.subtitle || "Pending data"}
                 />
             </Col>
         </Row>
@@ -73,56 +111,56 @@ export const OverviewCards: React.FC = () => {
             <Col lg={4} md={6}>
                 <StatsCard
                     title="Active Sessions"
-                    value="5"
+                    value={counselorStats?.activeSessions.value || "0"}
                     icon={FiCalendar}
                     color="var(--primary-teal)"
-                    subtitle="Currently in progress"
+                    subtitle={counselorStats?.activeSessions.subtitle || "Currently in progress"}
                 />
             </Col>
             <Col lg={4} md={6}>
                 <StatsCard
                     title="Waiting List"
-                    value="3"
+                    value={counselorStats?.waitingList.value || "0"}
                     icon={FiUsers}
                     color="var(--accent-orange)"
-                    subtitle="Awaiting assignment"
+                    subtitle={counselorStats?.waitingList.subtitle || "Awaiting assignment"}
                 />
             </Col>
             <Col lg={4} md={6}>
                 <StatsCard
                     title="Unread Messages"
-                    value="8"
+                    value={counselorStats?.unreadMessages.value || "0"}
                     icon={FiMessageSquare}
                     color="var(--primary-teal)"
-                    subtitle="From your clients"
+                    subtitle={counselorStats?.unreadMessages.subtitle || "From your clients"}
                 />
             </Col>
             <Col lg={4} md={6}>
                 <StatsCard
                     title="Total Clients"
-                    value="24"
+                    value={counselorStats?.totalClients.value || "0"}
                     icon={FiUserCheck}
                     color="var(--accent-orange)"
-                    subtitle="Active clients"
+                    subtitle={counselorStats?.totalClients.subtitle || "Active clients"}
                 />
             </Col>
             <Col lg={4} md={6}>
                 <StatsCard
                     title="Today's Schedule"
-                    value="4"
+                    value={counselorStats?.todaysSchedule.value || "0"}
                     icon={FiClock}
                     color="var(--primary-teal)"
-                    subtitle="Sessions today"
+                    subtitle={counselorStats?.todaysSchedule.subtitle || "Sessions today"}
                 />
             </Col>
             <Col lg={4} md={6}>
                 <StatsCard
                     title="Session Rating"
-                    value="4.8"
+                    value={counselorStats?.sessionRating.value || "N/A"}
                     icon={FiTrendingUp}
-                    trend={{ value: '0.3', isUp: true }}
+                    trend={counselorStats?.sessionRating.trend}
                     color="var(--accent-orange)"
-                    subtitle="Average rating"
+                    subtitle={counselorStats?.sessionRating.subtitle || "Average rating"}
                 />
             </Col>
         </Row>
@@ -133,78 +171,78 @@ export const OverviewCards: React.FC = () => {
             <Col xl={3} lg={6} md={6}>
                 <StatsCard
                     title="Total Users"
-                    value="1,284"
+                    value={adminStats?.totalUsers.value || "0"}
                     icon={FiUsers}
                     color="var(--primary-teal)"
-                    trend={{ value: '12%', isUp: true }}
-                    subtitle="Active users"
+                    trend={adminStats?.totalUsers.trend}
+                    subtitle={adminStats?.totalUsers.subtitle || "Registered users"}
                 />
             </Col>
             <Col xl={3} lg={6} md={6}>
                 <StatsCard
                     title="Counselors"
-                    value="48"
+                    value={adminStats?.counselors.value || "0"}
                     icon={FiUserCheck}
                     color="var(--accent-orange)"
-                    trend={{ value: '3', isUp: true }}
-                    subtitle="Licensed professionals"
+                    trend={adminStats?.counselors.trend}
+                    subtitle={adminStats?.counselors.subtitle || "Licensed professionals"}
                 />
             </Col>
             <Col xl={3} lg={6} md={6}>
                 <StatsCard
                     title="Active Sessions"
-                    value="32"
+                    value={adminStats?.activeSessions.value || "0"}
                     icon={FiCalendar}
                     color="var(--primary-teal)"
-                    subtitle="Currently ongoing"
+                    subtitle={adminStats?.activeSessions.subtitle || "Currently ongoing"}
                 />
             </Col>
             <Col xl={3} lg={6} md={6}>
                 <StatsCard
                     title="System Health"
-                    value="98%"
+                    value={adminStats?.systemHealth.value || "100%"}
                     icon={FiShield}
                     color="var(--accent-orange)"
-                    subtitle="Uptime this month"
+                    subtitle={adminStats?.systemHealth.subtitle || "Uptime this month"}
                 />
             </Col>
             <Col xl={3} lg={6} md={6}>
                 <StatsCard
                     title="New Users"
-                    value="156"
+                    value={adminStats?.newUsers.value || "0"}
                     icon={FiUsers}
                     color="var(--primary-teal)"
-                    trend={{ value: '8%', isUp: true }}
-                    subtitle="This month"
+                    trend={adminStats?.newUsers.trend}
+                    subtitle={adminStats?.newUsers.subtitle || "This month"}
                 />
             </Col>
             <Col xl={3} lg={6} md={6}>
                 <StatsCard
                     title="Sessions Completed"
-                    value="847"
+                    value={adminStats?.sessionsCompleted.value || "0"}
                     icon={FiTrendingUp}
                     color="var(--accent-orange)"
-                    subtitle="This month"
+                    subtitle={adminStats?.sessionsCompleted.subtitle || "This month"}
                 />
             </Col>
             <Col xl={3} lg={6} md={6}>
                 <StatsCard
                     title="Avg. Response"
-                    value="2.4h"
+                    value={adminStats?.avgResponse.value || "N/A"}
                     icon={FiClock}
                     color="var(--primary-teal)"
-                    trend={{ value: '15%', isUp: false }}
-                    subtitle="Response time"
+                    trend={adminStats?.avgResponse.trend}
+                    subtitle={adminStats?.avgResponse.subtitle || "Response time"}
                 />
             </Col>
             <Col xl={3} lg={6} md={6}>
                 <StatsCard
                     title="Satisfaction"
-                    value="4.6"
+                    value={adminStats?.satisfaction.value || "N/A"}
                     icon={FiHeart}
                     color="var(--accent-orange)"
-                    trend={{ value: '0.2', isUp: true }}
-                    subtitle="Average rating"
+                    trend={adminStats?.satisfaction.trend}
+                    subtitle={adminStats?.satisfaction.subtitle || "Average rating"}
                 />
             </Col>
         </Row>
@@ -213,7 +251,8 @@ export const OverviewCards: React.FC = () => {
     // Welcome message based on role
     const renderWelcomeMessage = () => {
         let content = { title: '', desc: '' };
-        if (isUser) content = { title: 'Welcome back! 👋', desc: "Here's your wellness summary for today" };
+        //use real name
+        if (isUser) content = { title: `Welcome back  ${user?.username}!`, desc: "Here's your wellness summary for today" };
         else if (isCounselor) content = { title: 'Your Counseling Dashboard', desc: "Here's an overview of your practice" };
         else if (isAdmin) content = { title: 'Admin Overview', desc: "Platform statistics and health metrics" };
         else return null;

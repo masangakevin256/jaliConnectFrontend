@@ -214,7 +214,7 @@ export const Sidebar: React.FC = () => {
         <ListGroup variant="flush" className="bg-transparent">
           <ListGroup.Item className="border-0 bg-transparent px-3 py-1">
             <Link
-              to="/help"
+              to="/dashboard/feedback"
               className="nav-link rounded-3 px-3 py-2 d-flex align-items-center gap-3 text-decoration-none"
               style={{ color: '#5F6F6C' }}
               onMouseEnter={(e) => {

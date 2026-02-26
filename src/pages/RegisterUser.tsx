@@ -84,6 +84,7 @@ export const RegisterUser: React.FC = () => {
 
     try {
       const { confirmPassword, ...payload } = formData;
+      console.log(payload);
       const response = await authService.registerUser(payload);
       setAuth(response);
       toast.success('Registration successful! Welcome to JaliConnect');
@@ -167,7 +168,7 @@ export const RegisterUser: React.FC = () => {
                       <Col md={6}>
                         {/* Email field */}
                         <FormInput
-                          label="Email"
+                          label="Email (optional)"
                           name="email"
                           type="email"
                           value={formData.email}
@@ -179,7 +180,7 @@ export const RegisterUser: React.FC = () => {
                       <Col md={6}>
                         {/* Phone field */}
                         <FormInput
-                          label="Phone"
+                          label="Phone(optional)"
                           name="phone"
                           type="tel"
                           value={formData.phone}
@@ -208,12 +209,10 @@ export const RegisterUser: React.FC = () => {
                         }}
                         className="shadow-sm"
                       >
-                        <option value="">Select your age group (optional)</option>
+                        <option value="">Select your age group</option>
                         <option value="13-17">13-17 years</option>
                         <option value="18-24">18-24 years</option>
                         <option value="25-35">25-35 years</option>
-                        <option value="36-50">36-50 years</option>
-                        <option value="50+">50+ years</option>
                       </Form.Select>
                     </Form.Group>
 

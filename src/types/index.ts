@@ -1,3 +1,4 @@
+// import { JwtPayload } from './../../../backend/node_modules/jwt-decode/build/cjs/index.d';
 // Role constants
 export const ROLE_LIST = {
   User: 'user',
@@ -8,6 +9,7 @@ export const ROLE_LIST = {
 // Auth types
 export interface User {
   id: string;
+  user_id?: string;
   username: string;
   email?: string;
   role: string;
@@ -17,9 +19,11 @@ export interface User {
 
 export interface Counselor {
   id: string;
+  user_id?: string;
   username: string;
   email?: string;
   specialties?: string;
+  phone?: string;
   role: string;
 }
 
@@ -129,4 +133,23 @@ export interface AuthContextType {
   logout: () => void;
   isAuthenticated: boolean;
   userRole: string | null;
+}
+export interface jwtPayload {
+  userInfo: {
+    id?: string;
+    user_id?: string;
+    username: string;
+    role?: string;
+  };
+}
+export interface UserSessionRow {
+  user_id: string;          // UUID → string in TS
+  username: string;
+  age_group: string;
+  last_seen: string | null; // timestamp → string or Date
+  pulse_level: number | null;
+
+  session_id: string;
+  status: string;
+  counselor_id: string;
 }
